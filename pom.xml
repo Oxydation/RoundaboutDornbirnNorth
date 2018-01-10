@@ -6,7 +6,48 @@
 
     <groupId>at.fhv.itm3.s2.roundabout</groupId>
     <artifactId>RoundaboutDornbirnNorth</artifactId>
+    <packaging>pom</packaging>
     <version>1.0</version>
+    <modules>
+        <module>core</module>
+    </modules>
 
-    
+    <properties>
+        <project.tests.junit.version>4.12</project.tests.junit.version>
+        <project.tests.mockito.version>1.9.5</project.tests.mockito.version>
+        <project.tests.awaitility.version>3.0.0</project.tests.awaitility.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <local.repository.folder>${project.basedir}/libs/</local.repository.folder>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>at.fhv.itm3.s2.roundabout</groupId>
+            <artifactId>roundabout-shared</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${local.repository.folder}/roundabout-api-1.0.0-javadoc.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>at.fhv.itm3.s2.roundabout</groupId>
+            <artifactId>roundabout-shared</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${local.repository.folder}/roundabout-core-1.0.0-javadoc.jar</systemPath>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/nl.talsmasoftware/umldoclet -->
+        <dependency>
+            <groupId>nl.talsmasoftware</groupId>
+            <artifactId>umldoclet</artifactId>
+            <version>1.0.14</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.sourceforge.plantuml/plantuml -->
+        <dependency>
+            <groupId>net.sourceforge.plantuml</groupId>
+            <artifactId>plantuml</artifactId>
+            <version>8059</version>
+        </dependency>
+    </dependencies>
+
 </project>
