@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>at.fhv.itm3.s2.roundabout</groupId>
+    <groupId>at.fhv.itm3.s2.roundabout.dornbirn</groupId>
     <artifactId>RoundaboutDornbirnNorth</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
@@ -17,25 +17,33 @@
         <project.tests.mockito.version>1.9.5</project.tests.mockito.version>
         <project.tests.awaitility.version>3.0.0</project.tests.awaitility.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <local.repository.folder>${project.basedir}/libs/</local.repository.folder>
+        <local.repository.folder>${project.basedir}/libs</local.repository.folder>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>local-maven-repository</id>
+            <url>file://${local.repository.folder}</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>at.fhv.itm3.s2.roundabout</groupId>
-            <artifactId>roundabout-shared</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${local.repository.folder}/roundabout-api-1.0.0-javadoc.jar</systemPath>
+            <groupId>trafsim</groupId>
+            <artifactId>trafsim</artifactId>
+            <version>0.1</version>
         </dependency>
         <dependency>
-            <groupId>at.fhv.itm3.s2.roundabout</groupId>
-            <artifactId>roundabout-shared</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${local.repository.folder}/roundabout-core-1.0.0-javadoc.jar</systemPath>
+            <groupId>desmoj</groupId>
+            <artifactId>desmoj</artifactId>
+            <version>2.5.1e</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/nl.talsmasoftware/umldoclet -->
         <dependency>
             <groupId>nl.talsmasoftware</groupId>
@@ -49,5 +57,140 @@
             <version>8059</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+        <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.3.1</version>
+                <executions>
+                    <execution>
+                        <id>install-roundabout-api</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${local.repository.folder}/roundabout-api-1.0.0.jar</file>
+                            <groupId>at.fhv.itm3.s2.roundabout</groupId>
+                            <artifactId>roundabout-api</artifactId>
+                            <version>1.0.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-desmoj</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${local.repository.folder}/desmoj-2.5.1e-bin.jar</file>
+                            <groupId>desmoj</groupId>
+                            <artifactId>desmoj</artifactId>
+                            <version>2.5.1e</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-trafsim</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${local.repository.folder}/trafsim-0.1.jar</file>
+                            <groupId>trafsim</groupId>
+                            <artifactId>trafsim</artifactId>
+                            <version>0.1</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-roundabout-core</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${local.repository.folder}/roundabout-core-1.0.0.jar</file>
+                            <groupId>at.fhv.itm3.s2.roundabout</groupId>
+                            <artifactId>roundabout-core</artifactId>
+                            <version>1.0.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Build language level -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>
+                                        at.fhv.itm3.s2.roundabout.Main
+                                    </mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <doclet>nl.talsmasoftware.umldoclet.UMLDoclet</doclet>
+                            <docletArtifact>
+                                <groupId>nl.talsmasoftware</groupId>
+                                <artifactId>umldoclet</artifactId>
+                                <version>1.0.14</version>
+                            </docletArtifact>
+                            <additionalparam>
+                                -umlIncludeProtectedFields false
+                                -umlImageFormat PNG
+                                -umlImageDirectory ../../../images/uml-class
+                            </additionalparam>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

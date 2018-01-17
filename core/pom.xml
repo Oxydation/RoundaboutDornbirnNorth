@@ -4,12 +4,32 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>RoundaboutDornbirnNorth</artifactId>
-        <groupId>at.fhv.itm3.s2.roundabout</groupId>
+        <groupId>at.fhv.itm3.s2.roundabout.dornbirn</groupId>
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <properties>
+        <local.repository.folder>${project.basedir}/../libs/</local.repository.folder>
+    </properties>
 
     <artifactId>core</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>at.fhv.itm3.s2.roundabout</groupId>
+            <artifactId>roundabout-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>at.fhv.itm3.s2.roundabout</groupId>
+            <artifactId>roundabout-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+    </dependencies>
 
 
 </project>
