@@ -7,6 +7,7 @@ import at.fhv.itm3.s2.roundabout.entity.*;
 import desmoj.core.simulator.Model;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
     @Override
@@ -56,19 +57,19 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
         RoundaboutSink sink4 = new RoundaboutSink(model, "sink4", false);
 
         // STREETCONNECTORS
-        StreetConnector c1_1 = new StreetConnector(Arrays.asList(s1_out), Arrays.asList(sink1));
-        StreetConnector c2_1 = new StreetConnector(Arrays.asList(s2_out), Arrays.asList(sink2));
-        StreetConnector c3_1 = new StreetConnector(Arrays.asList(s3_out), Arrays.asList(sink3));
-        StreetConnector c4_1 = new StreetConnector(Arrays.asList(s4_out), Arrays.asList(sink4));
+        StreetConnector c1_1 = new StreetConnector(Collections.singletonList(s1_out), Collections.singletonList(sink1));
+        StreetConnector c2_1 = new StreetConnector(Collections.singletonList(s2_out), Collections.singletonList(sink2));
+        StreetConnector c3_1 = new StreetConnector(Collections.singletonList(s3_out), Collections.singletonList(sink3));
+        StreetConnector c4_1 = new StreetConnector(Collections.singletonList(s4_out), Collections.singletonList(sink4));
 
-        StreetConnector c5_1 = new StreetConnector(Arrays.asList(s5_8, s2_in), Arrays.asList(s5_1));
-        StreetConnector c5_2 = new StreetConnector(Arrays.asList(s5_1), Arrays.asList(s5_2, s3_out));
-        StreetConnector c5_3 = new StreetConnector(Arrays.asList(s5_2, s3_in), Arrays.asList(s5_3));
-        StreetConnector c5_4 = new StreetConnector(Arrays.asList(s5_3), Arrays.asList(s5_4, s4_out));
-        StreetConnector c5_5 = new StreetConnector(Arrays.asList(s5_4, s4_in), Arrays.asList(s5_5));
-        StreetConnector c5_6 = new StreetConnector(Arrays.asList(s5_5), Arrays.asList(s5_6, s1_out));
-        StreetConnector c5_7 = new StreetConnector(Arrays.asList(s5_6, s1_in), Arrays.asList(s5_7));
-        StreetConnector c5_8 = new StreetConnector(Arrays.asList(s5_7), Arrays.asList(s5_8, s2_out));
+        StreetConnector c5_1 = new StreetConnector(Arrays.asList(s5_8, s2_in), Collections.singletonList(s5_1));
+        StreetConnector c5_2 = new StreetConnector(Collections.singletonList(s5_1), Arrays.asList(s5_2, s3_out));
+        StreetConnector c5_3 = new StreetConnector(Arrays.asList(s5_2, s3_in), Collections.singletonList(s5_3));
+        StreetConnector c5_4 = new StreetConnector(Collections.singletonList(s5_3), Arrays.asList(s5_4, s4_out));
+        StreetConnector c5_5 = new StreetConnector(Arrays.asList(s5_4, s4_in), Collections.singletonList(s5_5));
+        StreetConnector c5_6 = new StreetConnector(Collections.singletonList(s5_5), Arrays.asList(s5_6, s1_out));
+        StreetConnector c5_7 = new StreetConnector(Arrays.asList(s5_6, s1_in), Collections.singletonList(s5_7));
+        StreetConnector c5_8 = new StreetConnector(Collections.singletonList(s5_7), Arrays.asList(s5_8, s2_out));
 
         // Tell street sections previous/next street connectors
         s1_in.setNextStreetConnector(c5_7);
@@ -126,6 +127,31 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
         c2_1.initializeTrack(s2_out, ConsumerType.ROUNDABOUT_EXIT, sink2, ConsumerType.STREET_SECTION);
         c3_1.initializeTrack(s3_out, ConsumerType.ROUNDABOUT_EXIT, sink3, ConsumerType.STREET_SECTION);
         c4_1.initializeTrack(s4_out, ConsumerType.ROUNDABOUT_EXIT, sink4, ConsumerType.STREET_SECTION);
+
+        structure.addStreet(s1_in);
+        structure.addStreet(s1_out);
+        structure.addStreet(s2_in);
+        structure.addStreet(s2_out);
+        structure.addStreet(s3_in);
+        structure.addStreet(s3_out);
+        structure.addStreet(s4_in);
+        structure.addStreet(s4_out);
+        structure.addStreet(s5_1);
+        structure.addStreet(s5_2);
+        structure.addStreet(s5_3);
+        structure.addStreet(s5_4);
+        structure.addStreet(s5_5);
+        structure.addStreet(s5_6);
+        structure.addStreet(s5_7);
+        structure.addStreet(s5_8);
+        structure.addStreetConnector(c5_1);
+        structure.addStreetConnector(c5_2);
+        structure.addStreetConnector(c5_3);
+        structure.addStreetConnector(c5_4);
+        structure.addStreetConnector(c5_5);
+        structure.addStreetConnector(c5_6);
+        structure.addStreetConnector(c5_7);
+        structure.addStreetConnector(c5_8);
         return structure;
     }
 
