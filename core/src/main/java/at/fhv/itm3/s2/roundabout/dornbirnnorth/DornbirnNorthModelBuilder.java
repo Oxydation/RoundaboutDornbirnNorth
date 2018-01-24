@@ -14,31 +14,34 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
 
         IRoundaboutStructure structure = new RoundaboutStructure(model);
 
+        // TODO: set length of input street section to something realistic
+        // out does not really matter, as we use sinks
+
         // Schwefel
-        StreetSection s1_in = new StreetSection(10, model, "s1_in", false);
-        StreetSection s1_out = new StreetSection(10, model, "s1_out", false);
+        StreetSection s1_in = new StreetSection(250, model, "s1_in", false);
+        StreetSection s1_out = new StreetSection(20, model, "s1_out", false);
 
         // Achrain
-        StreetSection s2_in = new StreetSection(10, model, "s2_in", false);
-        StreetSection s2_out = new StreetSection(10, model, "s2_out", false);
+        StreetSection s2_in = new StreetSection(250, model, "s2_in", false);
+        StreetSection s2_out = new StreetSection(20, model, "s2_out", false);
 
         // Lauterach
-        StreetSection s3_in = new StreetSection(10, model, "s3_in", false);
-        StreetSection s3_out = new StreetSection(10, model, "s3_out", false);
+        StreetSection s3_in = new StreetSection(250, model, "s3_in", false);
+        StreetSection s3_out = new StreetSection(20, model, "s3_out", false);
 
         // Dornbirn Nord
-        StreetSection s4_in = new StreetSection(10, model, "s4_in", false);
-        StreetSection s4_out = new StreetSection(10, model, "s4_out", false);
+        StreetSection s4_in = new StreetSection(250, model, "s4_in", false);
+        StreetSection s4_out = new StreetSection(20, model, "s4_out", false);
 
         // Roundabout
-        StreetSection s5_1 = new StreetSection(10, model, "s5_1", false);
-        StreetSection s5_2 = new StreetSection(10, model, "s5_2", false);
-        StreetSection s5_3 = new StreetSection(10, model, "s5_3", false);
-        StreetSection s5_4 = new StreetSection(10, model, "s5_4", false);
-        StreetSection s5_5 = new StreetSection(10, model, "s5_5", false);
-        StreetSection s5_6 = new StreetSection(10, model, "s5_6", false);
-        StreetSection s5_7 = new StreetSection(10, model, "s5_7", false);
-        StreetSection s5_8 = new StreetSection(10, model, "s5_8", false);
+        StreetSection s5_1 = new StreetSection(13.5, model, "s5_1", false);
+        StreetSection s5_2 = new StreetSection(8.6, model, "s5_2", false);
+        StreetSection s5_3 = new StreetSection(11.9, model, "s5_3", false);
+        StreetSection s5_4 = new StreetSection(7.1, model, "s5_4", false);
+        StreetSection s5_5 = new StreetSection(11.9, model, "s5_5", false);
+        StreetSection s5_6 = new StreetSection(7.1, model, "s5_6", false);
+        StreetSection s5_7 = new StreetSection(11, model, "s5_7", false);
+        StreetSection s5_8 = new StreetSection(17.1, model, "s5_8", false);
 
         // Sources
         RoundaboutSource source1 = new RoundaboutSource(model, "so1", false, s1_in);
