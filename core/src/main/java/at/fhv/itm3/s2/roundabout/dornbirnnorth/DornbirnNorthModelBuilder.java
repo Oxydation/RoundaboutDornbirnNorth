@@ -1,11 +1,9 @@
 package at.fhv.itm3.s2.roundabout.dornbirnnorth;
 
 import at.fhv.itm3.s2.roundabout.api.IStructureModelBuilder;
+import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutStructure;
-import at.fhv.itm3.s2.roundabout.entity.StreetConnector;
-import at.fhv.itm3.s2.roundabout.entity.StreetSection;
+import at.fhv.itm3.s2.roundabout.entity.*;
 import desmoj.core.simulator.Model;
 
 import java.util.Arrays;
@@ -16,97 +14,115 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
 
         IRoundaboutStructure structure = new RoundaboutStructure(model);
 
-        // NORTH-EAST
-        StreetSection s1_1 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s1_2 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s1_3 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s1_4 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s1_5 = new StreetSection(10, model, "s1_t1", false);
+        // Schwefel
+        StreetSection s1_in = new StreetSection(10, model, "s1_in", false);
+        StreetSection s1_out = new StreetSection(10, model, "s1_out", false);
+
+        // Achrain
+        StreetSection s2_in = new StreetSection(10, model, "s2_in", false);
+        StreetSection s2_out = new StreetSection(10, model, "s2_out", false);
+
+        // Lauterach
+        StreetSection s3_in = new StreetSection(10, model, "s3_in", false);
+        StreetSection s3_out = new StreetSection(10, model, "s3_out", false);
+
+        // Dornbirn Nord
+        StreetSection s4_in = new StreetSection(10, model, "s4_in", false);
+        StreetSection s4_out = new StreetSection(10, model, "s4_out", false);
 
         // Roundabout
-        StreetSection s2_1 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s2_2 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s2_3 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s2_4 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s2_5 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s2_6 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s2_7 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s2_8 = new StreetSection(10, model, "s1_t1", false);
-
-        // NORTH-WEST
-        StreetSection s3_1 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s3_2 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s3_3 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s3_4 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s3_5 = new StreetSection(10, model, "s1_t1", false);
-
-        // SOUTH-WEST
-        StreetSection s4_1 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s4_2 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s4_3 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s4_4 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s4_5 = new StreetSection(10, model, "s1_t1", false);
-
-        // SOUTH-EAST
-        StreetSection s5_1 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s5_2 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s5_3 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s5_4 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s5_5 = new StreetSection(10, model, "s1_t1", false);
+        StreetSection s5_1 = new StreetSection(10, model, "s5_1", false);
+        StreetSection s5_2 = new StreetSection(10, model, "s5_2", false);
+        StreetSection s5_3 = new StreetSection(10, model, "s5_3", false);
+        StreetSection s5_4 = new StreetSection(10, model, "s5_4", false);
+        StreetSection s5_5 = new StreetSection(10, model, "s5_5", false);
+        StreetSection s5_6 = new StreetSection(10, model, "s5_6", false);
+        StreetSection s5_7 = new StreetSection(10, model, "s5_7", false);
+        StreetSection s5_8 = new StreetSection(10, model, "s5_8", false);
 
         // Sources
-        StreetSection s1_6 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s3_6 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s4_6 = new StreetSection(10, model, "s1_t1", false);
-        StreetSection s5_6 = new StreetSection(10, model, "s1_t1", false);
+        RoundaboutSource source1 = new RoundaboutSource(model, "so1", false, s1_in);
+        RoundaboutSource source2 = new RoundaboutSource(model, "so2", false, s2_in);
+        RoundaboutSource source3 = new RoundaboutSource(model, "so3", false, s3_in);
+        RoundaboutSource source4 = new RoundaboutSource(model, "so4", false, s4_in);
 
         // Sinks
-        RoundaboutSink sink1_1 = new RoundaboutSink(model, "SK1", false);
-        RoundaboutSink sink1_2 = new RoundaboutSink(model, "SK1", false);
-
-        RoundaboutSink sink4_1 = new RoundaboutSink(model, "SK1", false);
-        RoundaboutSink sink4_2 = new RoundaboutSink(model, "SK1", false);
-
-        RoundaboutSink sink3_1 = new RoundaboutSink(model, "SK1", false);
-        RoundaboutSink sink3_2 = new RoundaboutSink(model, "SK1", false);
-
-        RoundaboutSink sink5_1 = new RoundaboutSink(model, "SK1", false);
-        RoundaboutSink sink5_2 = new RoundaboutSink(model, "SK1", false);
-
+        RoundaboutSink sink1 = new RoundaboutSink(model, "sink1", false);
+        RoundaboutSink sink2 = new RoundaboutSink(model, "sink2", false);
+        RoundaboutSink sink3 = new RoundaboutSink(model, "sink3", false);
+        RoundaboutSink sink4 = new RoundaboutSink(model, "sink4", false);
 
         // STREETCONNECTORS
-        StreetConnector c1_1 = new StreetConnector(Arrays.asList(s1_6), Arrays.asList(s1_1, s1_2));
-        StreetConnector c1_2 = new StreetConnector(Arrays.asList(s1_1), Arrays.asList(s1_3));
-        StreetConnector c1_3 = new StreetConnector(Arrays.asList(s1_3), Arrays.asList(s1_4));
-        StreetConnector c1_4 = new StreetConnector(Arrays.asList(s1_4), Arrays.asList(sink1_1));
-        StreetConnector c1_5 = new StreetConnector(Arrays.asList(s1_5), Arrays.asList(sink1_2));
+        StreetConnector c1_1 = new StreetConnector(Arrays.asList(s1_out), Arrays.asList(sink1));
+        StreetConnector c2_1 = new StreetConnector(Arrays.asList(s2_out), Arrays.asList(sink2));
+        StreetConnector c3_1 = new StreetConnector(Arrays.asList(s3_out), Arrays.asList(sink3));
+        StreetConnector c4_1 = new StreetConnector(Arrays.asList(s4_out), Arrays.asList(sink4));
 
-        StreetConnector c2_1 = new StreetConnector(Arrays.asList(s1_2, s2_8), Arrays.asList(s2_5));
-        StreetConnector c2_2 = new StreetConnector(Arrays.asList(s2_1), Arrays.asList(s1_5, s2_2));
-        StreetConnector c2_3 = new StreetConnector(Arrays.asList(s2_2, s3_2), Arrays.asList(s2_3));
-        StreetConnector c2_4 = new StreetConnector(Arrays.asList(s2_3), Arrays.asList(s3_5, s2_4));
-        StreetConnector c2_5 = new StreetConnector(Arrays.asList(s2_4, s4_2), Arrays.asList(s2_5));
-        StreetConnector c2_6 = new StreetConnector(Arrays.asList(s2_5), Arrays.asList(s4_5, s2_6));
-        StreetConnector c2_7 = new StreetConnector(Arrays.asList(s2_6,s5_2), Arrays.asList(s2_7));
-        StreetConnector c2_8 = new StreetConnector(Arrays.asList(s2_7), Arrays.asList(s5_5,s2_8));
+        StreetConnector c5_1 = new StreetConnector(Arrays.asList(s5_8, s2_in), Arrays.asList(s5_1));
+        StreetConnector c5_2 = new StreetConnector(Arrays.asList(s5_1), Arrays.asList(s5_2, s3_out));
+        StreetConnector c5_3 = new StreetConnector(Arrays.asList(s5_2, s3_in), Arrays.asList(s5_3));
+        StreetConnector c5_4 = new StreetConnector(Arrays.asList(s5_3), Arrays.asList(s5_4, s4_out));
+        StreetConnector c5_5 = new StreetConnector(Arrays.asList(s5_4, s4_in), Arrays.asList(s5_5));
+        StreetConnector c5_6 = new StreetConnector(Arrays.asList(s5_5), Arrays.asList(s5_6, s1_out));
+        StreetConnector c5_7 = new StreetConnector(Arrays.asList(s5_6, s1_in), Arrays.asList(s5_7));
+        StreetConnector c5_8 = new StreetConnector(Arrays.asList(s5_7), Arrays.asList(s5_8, s2_out));
 
-        StreetConnector c3_1 = new StreetConnector(Arrays.asList(s3_6), Arrays.asList(s3_1,s3_2));
-        StreetConnector c3_2 = new StreetConnector(Arrays.asList(s3_1), Arrays.asList(s3_3));
-        StreetConnector c3_3 = new StreetConnector(Arrays.asList(s3_3), Arrays.asList(s3_4));
-        StreetConnector c3_4 = new StreetConnector(Arrays.asList(s3_4), Arrays.asList(sink3_1));
-        StreetConnector c3_5 = new StreetConnector(Arrays.asList(s3_5), Arrays.asList(sink3_2));
+        // Tell street sections previous/next street connectors
+        s1_in.setNextStreetConnector(c5_7);
+        s1_out.setPreviousStreetConnector(c5_6);
+        s1_out.setNextStreetConnector(c1_1);
 
-        StreetConnector c4_1 = new StreetConnector(Arrays.asList(s4_6), Arrays.asList(s4_1,s4_2));
-        StreetConnector c4_2 = new StreetConnector(Arrays.asList(s4_1), Arrays.asList(s4_3));
-        StreetConnector c4_3 = new StreetConnector(Arrays.asList(s4_3), Arrays.asList(s4_4));
-        StreetConnector c4_4 = new StreetConnector(Arrays.asList(s4_4), Arrays.asList(sink4_1));
-        StreetConnector c4_5 = new StreetConnector(Arrays.asList(s4_5), Arrays.asList(sink4_2));
+        s2_in.setNextStreetConnector(c5_1);
+        s2_out.setPreviousStreetConnector(c5_8);
+        s2_out.setNextStreetConnector(c2_1);
 
-        StreetConnector c5_1 = new StreetConnector(Arrays.asList(s5_6), Arrays.asList(s5_1,s5_2));
-        StreetConnector c5_2 = new StreetConnector(Arrays.asList(s5_1), Arrays.asList(s5_3));
-        StreetConnector c5_3 = new StreetConnector(Arrays.asList(s5_3), Arrays.asList(s5_4));
-        StreetConnector c5_4 = new StreetConnector(Arrays.asList(s5_4), Arrays.asList(sink5_1));
-        StreetConnector c5_5 = new StreetConnector(Arrays.asList(s5_5), Arrays.asList(sink5_2));
+        s3_in.setNextStreetConnector(c5_3);
+        s3_out.setPreviousStreetConnector(c5_2);
+        s3_out.setNextStreetConnector(c3_1);
+
+        s4_in.setNextStreetConnector(c5_5);
+        s4_out.setPreviousStreetConnector(c5_4);
+        s4_out.setNextStreetConnector(c4_1);
+
+        s5_1.setPreviousStreetConnector(c5_1);
+        s5_1.setNextStreetConnector(c5_2);
+        s5_2.setPreviousStreetConnector(c5_2);
+        s5_2.setNextStreetConnector(c5_3);
+        s5_3.setPreviousStreetConnector(c5_3);
+        s5_3.setNextStreetConnector(c5_4);
+        s5_4.setPreviousStreetConnector(c5_4);
+        s5_4.setNextStreetConnector(c5_5);
+        s5_5.setPreviousStreetConnector(c5_5);
+        s5_5.setNextStreetConnector(c5_6);
+        s5_6.setPreviousStreetConnector(c5_6);
+        s5_6.setNextStreetConnector(c5_7);
+        s5_7.setPreviousStreetConnector(c5_7);
+        s5_7.setNextStreetConnector(c5_8);
+        s5_8.setPreviousStreetConnector(c5_8);
+        s5_8.setNextStreetConnector(c5_1);
+
+        // Initialize tracks
+        c5_1.initializeTrack(s5_8, ConsumerType.ROUNDABOUT_SECTION, s5_1, ConsumerType.ROUNDABOUT_SECTION);
+        c5_1.initializeTrack(s2_in, ConsumerType.ROUNDABOUT_INLET, s5_1, ConsumerType.ROUNDABOUT_SECTION);
+        c5_2.initializeTrack(s5_1, ConsumerType.ROUNDABOUT_SECTION, s5_2, ConsumerType.ROUNDABOUT_SECTION);
+        c5_2.initializeTrack(s5_2, ConsumerType.ROUNDABOUT_SECTION, s3_out, ConsumerType.ROUNDABOUT_EXIT);
+        c5_3.initializeTrack(s5_2, ConsumerType.ROUNDABOUT_SECTION, s5_3, ConsumerType.ROUNDABOUT_SECTION);
+        c5_3.initializeTrack(s3_in, ConsumerType.ROUNDABOUT_INLET, s5_3, ConsumerType.ROUNDABOUT_SECTION);
+        c5_4.initializeTrack(s5_3, ConsumerType.ROUNDABOUT_SECTION, s5_4, ConsumerType.ROUNDABOUT_SECTION);
+        c5_4.initializeTrack(s5_3, ConsumerType.ROUNDABOUT_SECTION, s4_out, ConsumerType.ROUNDABOUT_EXIT);
+        c5_5.initializeTrack(s5_4, ConsumerType.ROUNDABOUT_SECTION, s5_5, ConsumerType.ROUNDABOUT_SECTION);
+        c5_5.initializeTrack(s4_in, ConsumerType.ROUNDABOUT_INLET, s5_5, ConsumerType.ROUNDABOUT_SECTION);
+        c5_6.initializeTrack(s5_5, ConsumerType.ROUNDABOUT_SECTION, s5_6, ConsumerType.ROUNDABOUT_SECTION);
+        c5_6.initializeTrack(s5_5, ConsumerType.ROUNDABOUT_SECTION, s1_out, ConsumerType.ROUNDABOUT_EXIT);
+        c5_7.initializeTrack(s5_6, ConsumerType.ROUNDABOUT_SECTION, s5_7, ConsumerType.ROUNDABOUT_SECTION);
+        c5_7.initializeTrack(s1_in, ConsumerType.ROUNDABOUT_INLET, s5_7, ConsumerType.ROUNDABOUT_SECTION);
+        c5_8.initializeTrack(s5_7, ConsumerType.ROUNDABOUT_SECTION, s5_8, ConsumerType.ROUNDABOUT_SECTION);
+        c5_8.initializeTrack(s5_7, ConsumerType.ROUNDABOUT_SECTION, s2_out, ConsumerType.ROUNDABOUT_EXIT);
+
+        c1_1.initializeTrack(s1_out, ConsumerType.ROUNDABOUT_EXIT, sink1, ConsumerType.STREET_SECTION);
+        c2_1.initializeTrack(s2_out, ConsumerType.ROUNDABOUT_EXIT, sink2, ConsumerType.STREET_SECTION);
+        c3_1.initializeTrack(s3_out, ConsumerType.ROUNDABOUT_EXIT, sink3, ConsumerType.STREET_SECTION);
+        c4_1.initializeTrack(s4_out, ConsumerType.ROUNDABOUT_EXIT, sink4, ConsumerType.STREET_SECTION);
         return structure;
     }
 
