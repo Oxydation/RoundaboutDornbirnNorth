@@ -90,20 +90,23 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
         StreetConnector c2_7 = new StreetConnector(Arrays.asList(s2_6,s5_2), Arrays.asList(s2_7));
         StreetConnector c2_8 = new StreetConnector(Arrays.asList(s2_7), Arrays.asList(s5_5,s2_8));
 
-        StreetConnector c3_1 = new StreetConnector(previousSections, nextSections);
-        StreetConnector c3_2 = new StreetConnector(previousSections, nextSections);
-        StreetConnector c3_3 = new StreetConnector(previousSections, nextSections);
-        StreetConnector c3_4 = new StreetConnector(previousSections, nextSections);
+        StreetConnector c3_1 = new StreetConnector(Arrays.asList(s3_6), Arrays.asList(s3_1,s3_2));
+        StreetConnector c3_2 = new StreetConnector(Arrays.asList(s3_1), Arrays.asList(s3_3));
+        StreetConnector c3_3 = new StreetConnector(Arrays.asList(s3_3), Arrays.asList(s3_4));
+        StreetConnector c3_4 = new StreetConnector(Arrays.asList(s3_4), Arrays.asList(sink3_1));
+        StreetConnector c3_5 = new StreetConnector(Arrays.asList(s3_5), Arrays.asList(sink3_2));
 
-        StreetConnector c4_1 = new StreetConnector(previousSections, nextSections);
-        StreetConnector c4_2 = new StreetConnector(previousSections, nextSections);
-        StreetConnector c4_3 = new StreetConnector(previousSections, nextSections);
-        StreetConnector c4_4 = new StreetConnector(previousSections, nextSections);
+        StreetConnector c4_1 = new StreetConnector(Arrays.asList(s4_6), Arrays.asList(s4_1,s4_2));
+        StreetConnector c4_2 = new StreetConnector(Arrays.asList(s4_1), Arrays.asList(s4_3));
+        StreetConnector c4_3 = new StreetConnector(Arrays.asList(s4_3), Arrays.asList(s4_4));
+        StreetConnector c4_4 = new StreetConnector(Arrays.asList(s4_4), Arrays.asList(sink4_1));
+        StreetConnector c4_5 = new StreetConnector(Arrays.asList(s4_5), Arrays.asList(sink4_2));
 
-        StreetConnector c5_1 = new StreetConnector(previousSections, nextSections);
-        StreetConnector c5_2 = new StreetConnector(previousSections, nextSections);
-        StreetConnector c5_3 = new StreetConnector(previousSections, nextSections);
-        StreetConnector c5_4 = new StreetConnector(previousSections, nextSections);
+        StreetConnector c5_1 = new StreetConnector(Arrays.asList(s5_6), Arrays.asList(s5_1,s5_2));
+        StreetConnector c5_2 = new StreetConnector(Arrays.asList(s5_1), Arrays.asList(s5_3));
+        StreetConnector c5_3 = new StreetConnector(Arrays.asList(s5_3), Arrays.asList(s5_4));
+        StreetConnector c5_4 = new StreetConnector(Arrays.asList(s5_4), Arrays.asList(sink5_1));
+        StreetConnector c5_5 = new StreetConnector(Arrays.asList(s5_5), Arrays.asList(sink5_2));
         return structure;
     }
 
