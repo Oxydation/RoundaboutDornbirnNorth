@@ -3,20 +3,20 @@ package at.fhv.itm3.s2.roundabout.dornbirnnorth;
 import at.fhv.itm3.s2.roundabout.api.IStructureModelBuilder;
 import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
+import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.entity.*;
 import desmoj.core.simulator.Model;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
     @Override
     public IRoundaboutStructure build(Model model) {
 
         IRoundaboutStructure structure = new RoundaboutStructure(model);
-
-        // TODO: set length of input street section to something realistic
-        // out does not really matter, as we use sinks
 
         // Schwefel
         StreetSection s1_in = new StreetSection(250, model, "s1_in", false);
@@ -128,6 +128,92 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
         c3_1.initializeTrack(s3_out, ConsumerType.ROUNDABOUT_EXIT, sink3, ConsumerType.STREET_SECTION);
         c4_1.initializeTrack(s4_out, ConsumerType.ROUNDABOUT_EXIT, sink4, ConsumerType.STREET_SECTION);
 
+        // Generate manual routes
+        // 1 to 3 & 4
+        IRoute oneTo_threeRoute = new Route();
+        oneTo_threeRoute.addSource(source1);
+        oneTo_threeRoute.addSection(s1_in);
+        oneTo_threeRoute.addSection(s5_7);
+        oneTo_threeRoute.addSection(s5_8);
+        oneTo_threeRoute.addSection(s5_1);
+        oneTo_threeRoute.addSection(s3_out);
+        oneTo_threeRoute.addSection(sink3);
+
+        IRoute oneTo_fourRoute = new Route();
+        oneTo_fourRoute.addSource(source1);
+        oneTo_fourRoute.addSection(s1_in);
+        oneTo_fourRoute.addSection(s5_7);
+        oneTo_fourRoute.addSection(s5_8);
+        oneTo_fourRoute.addSection(s5_1);
+        oneTo_fourRoute.addSection(s5_2);
+        oneTo_fourRoute.addSection(s5_3);
+        oneTo_fourRoute.addSection(s4_out);
+        oneTo_fourRoute.addSection(sink4);
+
+        // 2 to 4 & 1
+        IRoute twoTo_four = new Route();
+        twoTo_four.addSource(source2);
+        twoTo_four.addSection(s2_in);
+        twoTo_four.addSection(s5_1);
+        twoTo_four.addSection(s5_2);
+        twoTo_four.addSection(s5_3);
+        twoTo_four.addSection(s4_out);
+        twoTo_four.addSection(sink4);
+
+        IRoute twoTo_one = new Route();
+        twoTo_one.addSource(source2);
+        twoTo_one.addSection(s2_in);
+        twoTo_one.addSection(s5_1);
+        twoTo_one.addSection(s5_2);
+        twoTo_one.addSection(s5_3);
+        twoTo_one.addSection(s5_4);
+        twoTo_one.addSection(s5_5);
+        twoTo_one.addSection(s1_out);
+        twoTo_one.addSection(sink1);
+
+        // 3 to 1 & 2
+        IRoute threeTo_one = new Route();
+        threeTo_one.addSource(source3);
+        threeTo_one.addSection(s3_in);
+        threeTo_one.addSection(s5_3);
+        threeTo_one.addSection(s5_4);
+        threeTo_one.addSection(s5_5);
+        threeTo_one.addSection(s1_out);
+        threeTo_one.addSection(sink1);
+
+        IRoute threeTo_two = new Route();
+        threeTo_two.addSource(source3);
+        threeTo_two.addSection(s3_in);
+        threeTo_two.addSection(s5_3);
+        threeTo_two.addSection(s5_4);
+        threeTo_two.addSection(s5_5);
+        threeTo_two.addSection(s5_6);
+        threeTo_two.addSection(s5_7);
+        threeTo_two.addSection(s2_out);
+        threeTo_two.addSection(sink2);
+
+        // 4 to 2 & 3
+        IRoute fourTo_two = new Route();
+        fourTo_two.addSource(source4);
+        fourTo_two.addSection(s4_in);
+        fourTo_two.addSection(s5_5);
+        fourTo_two.addSection(s5_6);
+        fourTo_two.addSection(s5_7);
+        fourTo_two.addSection(s2_out);
+        fourTo_two.addSection(sink2);
+
+        IRoute fourTo_three = new Route();
+        fourTo_three.addSource(source4);
+        fourTo_three.addSection(s4_in);
+        fourTo_three.addSection(s5_5);
+        fourTo_three.addSection(s5_6);
+        fourTo_three.addSection(s5_7);
+        fourTo_three.addSection(s5_8);
+        fourTo_three.addSection(s5_1);
+        fourTo_three.addSection(s3_out);
+        fourTo_three.addSection(sink3);
+
+        // Add elements to structure
         structure.addStreet(s1_in);
         structure.addStreet(s1_out);
         structure.addStreet(s2_in);
@@ -144,6 +230,7 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
         structure.addStreet(s5_6);
         structure.addStreet(s5_7);
         structure.addStreet(s5_8);
+
         structure.addStreetConnector(c5_1);
         structure.addStreetConnector(c5_2);
         structure.addStreetConnector(c5_3);
@@ -152,7 +239,25 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
         structure.addStreetConnector(c5_6);
         structure.addStreetConnector(c5_7);
         structure.addStreetConnector(c5_8);
+
+        structure.addSource(source1);
+        structure.addSource(source2);
+        structure.addSource(source3);
+        structure.addSource(source4);
+
+        structure.addSink(sink1);
+        structure.addSink(sink2);
+        structure.addSink(sink3);
+        structure.addSink(sink4);
+
+        structure.addRoute(oneTo_threeRoute);
+        structure.addRoute(oneTo_fourRoute);
+        structure.addRoute(twoTo_four);
+        structure.addRoute(twoTo_one);
+        structure.addRoute(threeTo_one);
+        structure.addRoute(threeTo_two);
+        structure.addRoute(fourTo_two);
+        structure.addRoute(fourTo_three);
         return structure;
     }
-
 }

@@ -13,19 +13,18 @@ import java.util.concurrent.TimeUnit;
 
 public class SimulationRunner implements ILogger {
     private static final String DEFAULT_ROUNDABOUT_CONFIG_FILENAME = "roundabout.xml";
+    private static final long SimulationDurationInMinutes = 1440L;
 
     public static void main(String[] args) {
-
-        BetterRoundaboutSimulationModel model = new BetterRoundaboutSimulationModel(null, "", true, false);
-
         Experiment exp = new Experiment("Roundabout Experiment");
-        Experiment.setReferenceUnit(TimeUnit.SECONDS);
         Experiment.setEpsilon(TimeUnit.SECONDS);
+        Experiment.setReferenceUnit(TimeUnit.SECONDS);
         exp.setSeedGenerator((long) (Long.MAX_VALUE * Math.random()));
         exp.getDistributionManager().newSeedAll();
         exp.setShowProgressBar(false);
         exp.setSilent(true);
 
+        BetterRoundaboutSimulationModel model = new BetterRoundaboutSimulationModel(null, "", true, false);
         model.connectToExperiment(exp);
 
         IRoundaboutStructure roundaboutStructure = getRoundaboutStructureFromConfigFile(args, exp);
@@ -36,7 +35,7 @@ public class SimulationRunner implements ILogger {
 
         model.setRoundaboutStructure(roundaboutStructure);
 
-        TimeInstant stopTime = new TimeInstant(1440L, TimeUnit.MINUTES);
+        TimeInstant stopTime = new TimeInstant(SimulationDurationInMinutes, TimeUnit.MINUTES);
         exp.tracePeriod(new TimeInstant(0L), stopTime);
         exp.stop(stopTime);
         System.out.println("Starting simulation.");
@@ -55,6 +54,7 @@ public class SimulationRunner implements ILogger {
             roundaboutStructure = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
         } catch (ConfigParserException e) {
             // LOGGER.error(e);
+            // does not work?
         }
         return roundaboutStructure;
     }
