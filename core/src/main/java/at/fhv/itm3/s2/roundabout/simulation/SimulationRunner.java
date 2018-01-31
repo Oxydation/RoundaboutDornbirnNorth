@@ -5,7 +5,7 @@ import at.fhv.itm3.s2.roundabout.dornbirnnorth.DornbirnNorthModelBuilder;
 import at.fhv.itm3.s2.roundabout.util.ConfigParser;
 import at.fhv.itm3.s2.roundabout.util.ConfigParserException;
 import at.fhv.itm3.s2.roundabout.util.ILogger;
-import at.fhv.itm3.s2.roundabout.util.dto.RoundAboutConfig;
+import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
 import desmoj.core.simulator.Experiment;
 import desmoj.core.simulator.TimeInstant;
 
@@ -50,8 +50,8 @@ public class SimulationRunner implements ILogger {
         try {
             String roundaboutConfigFileName = getArgOrDefault(args, 0, DEFAULT_ROUNDABOUT_CONFIG_FILENAME);
             ConfigParser configParser = new ConfigParser(roundaboutConfigFileName);
-            RoundAboutConfig roundAboutConfig = configParser.loadConfig();
-            roundaboutStructure = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
+            ModelConfig modelConfig = configParser.loadConfig();
+            roundaboutStructure = configParser.generateRoundaboutStructure(modelConfig, exp);
         } catch (ConfigParserException e) {
             // LOGGER.error(e);
             // does not work?

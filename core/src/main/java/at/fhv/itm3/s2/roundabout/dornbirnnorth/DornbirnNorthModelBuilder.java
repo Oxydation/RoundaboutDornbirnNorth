@@ -109,7 +109,7 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
         c5_1.initializeTrack(s5_8, ConsumerType.ROUNDABOUT_SECTION, s5_1, ConsumerType.ROUNDABOUT_SECTION);
         c5_1.initializeTrack(s2_in, ConsumerType.ROUNDABOUT_INLET, s5_1, ConsumerType.ROUNDABOUT_SECTION);
         c5_2.initializeTrack(s5_1, ConsumerType.ROUNDABOUT_SECTION, s5_2, ConsumerType.ROUNDABOUT_SECTION);
-        c5_2.initializeTrack(s5_2, ConsumerType.ROUNDABOUT_SECTION, s3_out, ConsumerType.ROUNDABOUT_EXIT);
+        c5_2.initializeTrack(s5_1, ConsumerType.ROUNDABOUT_SECTION, s3_out, ConsumerType.ROUNDABOUT_EXIT);
         c5_3.initializeTrack(s5_2, ConsumerType.ROUNDABOUT_SECTION, s5_3, ConsumerType.ROUNDABOUT_SECTION);
         c5_3.initializeTrack(s3_in, ConsumerType.ROUNDABOUT_INLET, s5_3, ConsumerType.ROUNDABOUT_SECTION);
         c5_4.initializeTrack(s5_3, ConsumerType.ROUNDABOUT_SECTION, s5_4, ConsumerType.ROUNDABOUT_SECTION);
@@ -239,6 +239,10 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
         structure.addStreetConnector(c5_6);
         structure.addStreetConnector(c5_7);
         structure.addStreetConnector(c5_8);
+        structure.addStreetConnector(c1_1);
+        structure.addStreetConnector(c2_1);
+        structure.addStreetConnector(c3_1);
+        structure.addStreetConnector(c4_1);
 
         structure.addSource(source1);
         structure.addSource(source2);
