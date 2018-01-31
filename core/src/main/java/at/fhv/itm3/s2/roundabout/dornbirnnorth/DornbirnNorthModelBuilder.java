@@ -19,19 +19,19 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
         IRoundaboutStructure structure = new RoundaboutStructure(model);
 
         // Schwefel
-        StreetSection s1_in = new StreetSection(250, model, "s1_in", false);
+        StreetSection s1_in = new StreetSection(20, model, "s1_in", false);
         StreetSection s1_out = new StreetSection(20, model, "s1_out", false);
 
         // Achrain
-        StreetSection s2_in = new StreetSection(250, model, "s2_in", false);
+        StreetSection s2_in = new StreetSection(20, model, "s2_in", false);
         StreetSection s2_out = new StreetSection(20, model, "s2_out", false);
 
         // Lauterach
-        StreetSection s3_in = new StreetSection(250, model, "s3_in", false);
+        StreetSection s3_in = new StreetSection(20, model, "s3_in", false);
         StreetSection s3_out = new StreetSection(20, model, "s3_out", false);
 
         // Dornbirn Nord
-        StreetSection s4_in = new StreetSection(250, model, "s4_in", false);
+        StreetSection s4_in = new StreetSection(20, model, "s4_in", false);
         StreetSection s4_out = new StreetSection(20, model, "s4_out", false);
 
         // Roundabout
@@ -42,7 +42,7 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
         StreetSection s5_5 = new StreetSection(11.9, model, "s5_5", false);
         StreetSection s5_6 = new StreetSection(7.1, model, "s5_6", false);
         StreetSection s5_7 = new StreetSection(11, model, "s5_7", false);
-        StreetSection s5_8 = new StreetSection(17.1, model, "s5_8", false);
+        StreetSection s5_8 = new StreetSection(7.1, model, "s5_8", false);
 
         // Sources
         RoundaboutSource source1 = new RoundaboutSource(model, "so1", false, s1_in);
