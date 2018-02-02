@@ -4,8 +4,10 @@ import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.dornbirnnorth.DornbirnNorthModelBuilder;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.util.ConfigParser;
 import at.fhv.itm3.s2.roundabout.util.ConfigParserException;
+import at.fhv.itm3.s2.roundabout.util.ILogger;
 import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
 import desmoj.core.simulator.Experiment;
 import desmoj.core.simulator.TimeInstant;
@@ -20,15 +22,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class SimulationRunner {
-    private static final String DEFAULT_ROUNDABOUT_CONFIG_FILENAME = "roundabout.xml";
-    private static final long SimulationDuration = 1440 * 60;
+public class SimulationRunner implements ILogger {
+    private static final String DEFAULT_ROUNDABOUT_CONFIG_PATH = SimulationRunner.class.getResource("/dornbirn-nord.xml").getPath();
+    private static final long SimulationDuration = 3 * 60 * 60;
 //    private static final long ExecutionSpeed = 50000L;
     private static Map<Street, TimeSeries> timeSeriesMap;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ConfigParserException {
+        Double minTimeBetweenCarArrival = 4.0;
+        Double maxTimeBetweenCarArrival = 4.0;
 
-        BetterRoundaboutSimulationModel model = new BetterRoundaboutSimulationModel(null, "", true, false);
+        BetterRoundaboutSimulationModel model = new BetterRoundaboutSimulationModel(null, "", true, false, minTimeBetweenCarArrival, maxTimeBetweenCarArrival);
         Experiment exp = new Experiment("Roundabout Experiment");
         Experiment.setEpsilon(model.getModelTimeUnit());
         Experiment.setReferenceUnit(model.getModelTimeUnit());
@@ -37,9 +41,9 @@ public class SimulationRunner {
         exp.setShowProgressBar(true);
         exp.setSilent(true);
 
-        model.connectToExperiment(exp);
+       model.connectToExperiment(exp);
 
-        IRoundaboutStructure roundaboutStructure = getRoundaboutStructureFromConfigFile(args, exp);
+        IRoundaboutStructure roundaboutStructure = null; // = getRoundaboutStructureFromConfigFile(args, model);
 
         if (roundaboutStructure == null) {
             roundaboutStructure = new DornbirnNorthModelBuilder().build(model);
@@ -95,17 +99,16 @@ public class SimulationRunner {
         System.out.println("---------\n");
     }
 
-    private static IRoundaboutStructure getRoundaboutStructureFromConfigFile(String[] args, Experiment exp) {
+    private static IRoundaboutStructure getRoundaboutStructureFromConfigFile(String[] args, BetterRoundaboutSimulationModel model) {
 
         IRoundaboutStructure roundaboutStructure = null;
         try {
-            String roundaboutConfigFileName = getArgOrDefault(args, 0, DEFAULT_ROUNDABOUT_CONFIG_FILENAME);
+            String roundaboutConfigFileName = getArgOrDefault(args, 0, DEFAULT_ROUNDABOUT_CONFIG_PATH);
             ConfigParser configParser = new ConfigParser(roundaboutConfigFileName);
             ModelConfig modelConfig = configParser.loadConfig();
-            roundaboutStructure = configParser.generateRoundaboutStructure(modelConfig, exp);
+            roundaboutStructure = configParser.generateRoundaboutStructure(modelConfig, model);
         } catch (ConfigParserException e) {
-            // LOGGER.error(e);
-            // does not work?
+            System.err.println(e);
         }
         return roundaboutStructure;
     }

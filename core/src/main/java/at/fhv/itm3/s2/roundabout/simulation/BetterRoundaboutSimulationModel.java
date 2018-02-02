@@ -22,15 +22,15 @@ public class BetterRoundaboutSimulationModel extends RoundaboutSimulationModel {
     private IRoundaboutStructure _roundaboutStructure;
     private Map<Street, TimeSeries> timeSeriesMap;
 
-    public BetterRoundaboutSimulationModel(Model model, String name, boolean showInReport, boolean showInTrace) {
-        super(model, name, showInReport, showInTrace);
+    public BetterRoundaboutSimulationModel(Model model, String name, boolean showInReport, boolean showInTrace, double minTimeBetweenCarArrivals, double maxTimeBetweenCarArrivals) {
+        super(model, name, showInReport, showInTrace, minTimeBetweenCarArrivals, maxTimeBetweenCarArrivals);
     }
 
     @Override
     public void doInitialSchedules() {
         super.doInitialSchedules();
         for (AbstractSource source : _roundaboutStructure.getSources()) {
-            source.startGeneratingCars(this.getRandomTimeBetweenCarArrivals());
+            source.startGeneratingCars(this.getRandomTimeBetweenCarArrivalsOnMainFlow());
         }
         StatisticsUpdateEvent statisticsUpdateEvent = new StatisticsUpdateEvent(this, "StatisticsUpdateEvent", false);
         statisticsUpdateEvent.schedule(this.getRoundaboutStructure().getStreets().iterator().next(), new TimeSpan(0, TimeUnit.SECONDS));
@@ -48,13 +48,16 @@ public class BetterRoundaboutSimulationModel extends RoundaboutSimulationModel {
         return _roundaboutStructure;
     }
 
+
     private void initRoutes() {
         for (AbstractSource source : _roundaboutStructure.getSources()) {
             List<IRoute> routes = new LinkedList<>();
 
-            for (IRoute route : _roundaboutStructure.getRoutes()) {
-                if (route.getSource() == source) {
-                    routes.add(route);
+            for (List<IRoute> routeList : _roundaboutStructure.getRoutes().values()) {
+                for(IRoute route : routeList) {
+                    if (route.getSource() == source) {
+                        routes.add(route);
+                    }
                 }
             }
             RouteController.getInstance(this).getSources().add(source);

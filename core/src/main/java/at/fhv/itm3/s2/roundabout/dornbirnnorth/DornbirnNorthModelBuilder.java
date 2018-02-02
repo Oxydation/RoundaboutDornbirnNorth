@@ -4,8 +4,10 @@ import at.fhv.itm3.s2.roundabout.api.IStructureModelBuilder;
 import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.entity.*;
 import desmoj.core.simulator.Model;
+import org.apache.commons.collections.ArrayStack;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Arrays;
@@ -130,138 +132,42 @@ public class DornbirnNorthModelBuilder implements IStructureModelBuilder {
 
         // Generate manual routes
         // 1 to 3 & 4
-        IRoute oneTo_threeRoute = new Route();
-        oneTo_threeRoute.addSource(source1);
-        oneTo_threeRoute.addSection(s1_in);
-        oneTo_threeRoute.addSection(s5_7);
-        oneTo_threeRoute.addSection(s5_8);
-        oneTo_threeRoute.addSection(s5_1);
-        oneTo_threeRoute.addSection(s3_out);
-        oneTo_threeRoute.addSection(sink3);
-
-        IRoute oneTo_fourRoute = new Route();
-        oneTo_fourRoute.addSource(source1);
-        oneTo_fourRoute.addSection(s1_in);
-        oneTo_fourRoute.addSection(s5_7);
-        oneTo_fourRoute.addSection(s5_8);
-        oneTo_fourRoute.addSection(s5_1);
-        oneTo_fourRoute.addSection(s5_2);
-        oneTo_fourRoute.addSection(s5_3);
-        oneTo_fourRoute.addSection(s4_out);
-        oneTo_fourRoute.addSection(sink4);
+        IRoute oneTo_threeRoute = new Route(Arrays.asList(s1_in,s5_7,s5_8,s5_1,s3_out,sink3), source1, 0.5);
+        IRoute oneTo_fourRoute = new Route(Arrays.asList(s1_in,s5_7,s5_8,s5_1,s5_2,s5_3,s4_out,sink4), source1, 0.6);
+        source1.addGenerateRatio(1.1);
 
         // 2 to 4 & 1
-        IRoute twoTo_four = new Route();
-        twoTo_four.addSource(source2);
-        twoTo_four.addSection(s2_in);
-        twoTo_four.addSection(s5_1);
-        twoTo_four.addSection(s5_2);
-        twoTo_four.addSection(s5_3);
-        twoTo_four.addSection(s4_out);
-        twoTo_four.addSection(sink4);
-
-        IRoute twoTo_one = new Route();
-        twoTo_one.addSource(source2);
-        twoTo_one.addSection(s2_in);
-        twoTo_one.addSection(s5_1);
-        twoTo_one.addSection(s5_2);
-        twoTo_one.addSection(s5_3);
-        twoTo_one.addSection(s5_4);
-        twoTo_one.addSection(s5_5);
-        twoTo_one.addSection(s1_out);
-        twoTo_one.addSection(sink1);
+        IRoute twoTo_four = new Route(Arrays.asList(s2_in, s5_1,s5_2,s5_3,s4_out,sink4), source2, 0.9);
+        IRoute twoTo_one = new Route(Arrays.asList(s2_in,s5_1,s5_2,s5_3,s5_4,s5_5,s1_out,sink1), source2, 0.3);
+        source2.addGenerateRatio(1.2);
 
         // 3 to 1 & 2
-        IRoute threeTo_one = new Route();
-        threeTo_one.addSource(source3);
-        threeTo_one.addSection(s3_in);
-        threeTo_one.addSection(s5_3);
-        threeTo_one.addSection(s5_4);
-        threeTo_one.addSection(s5_5);
-        threeTo_one.addSection(s1_out);
-        threeTo_one.addSection(sink1);
-
-        IRoute threeTo_two = new Route();
-        threeTo_two.addSource(source3);
-        threeTo_two.addSection(s3_in);
-        threeTo_two.addSection(s5_3);
-        threeTo_two.addSection(s5_4);
-        threeTo_two.addSection(s5_5);
-        threeTo_two.addSection(s5_6);
-        threeTo_two.addSection(s5_7);
-        threeTo_two.addSection(s2_out);
-        threeTo_two.addSection(sink2);
+        IRoute threeTo_one = new Route(Arrays.asList(s3_in, s5_3, s5_4, s5_5, s1_out, sink1),source3, 0.3);
+        IRoute threeTo_two = new Route(Arrays.asList(s3_in,s5_3,s5_4,s5_5,s5_6,s5_7,s2_out,sink2), source3, 0.2);
+        source3.addGenerateRatio(0.5);
 
         // 4 to 2 & 3
-        IRoute fourTo_two = new Route();
-        fourTo_two.addSource(source4);
-        fourTo_two.addSection(s4_in);
-        fourTo_two.addSection(s5_5);
-        fourTo_two.addSection(s5_6);
-        fourTo_two.addSection(s5_7);
-        fourTo_two.addSection(s2_out);
-        fourTo_two.addSection(sink2);
-
-        IRoute fourTo_three = new Route();
-        fourTo_three.addSource(source4);
-        fourTo_three.addSection(s4_in);
-        fourTo_three.addSection(s5_5);
-        fourTo_three.addSection(s5_6);
-        fourTo_three.addSection(s5_7);
-        fourTo_three.addSection(s5_8);
-        fourTo_three.addSection(s5_1);
-        fourTo_three.addSection(s3_out);
-        fourTo_three.addSection(sink3);
+        IRoute fourTo_two = new Route(Arrays.asList(s4_in,s5_5,s5_6,s5_7,s2_out,sink2), source4, 1.0);
+        IRoute fourTo_three = new Route(Arrays.asList(s4_in,s5_5,s5_6,s5_7,s5_8,s5_1,s3_out,sink3), source4, 0.6);
+        source4.addGenerateRatio(1.6);
 
         // Add elements to structure
-        structure.addStreet(s1_in);
-        structure.addStreet(s1_out);
-        structure.addStreet(s2_in);
-        structure.addStreet(s2_out);
-        structure.addStreet(s3_in);
-        structure.addStreet(s3_out);
-        structure.addStreet(s4_in);
-        structure.addStreet(s4_out);
-        structure.addStreet(s5_1);
-        structure.addStreet(s5_2);
-        structure.addStreet(s5_3);
-        structure.addStreet(s5_4);
-        structure.addStreet(s5_5);
-        structure.addStreet(s5_6);
-        structure.addStreet(s5_7);
-        structure.addStreet(s5_8);
+        List<Street> streets = Arrays.asList(s1_in, s1_out, s2_in, s2_out, s3_in, s3_out, s4_in, s4_out, s5_1, s5_2, s5_3,
+                s5_4, s5_5, s5_6, s5_7, s5_8);
+        structure.addStreets(streets);
 
-        structure.addStreetConnector(c5_1);
-        structure.addStreetConnector(c5_2);
-        structure.addStreetConnector(c5_3);
-        structure.addStreetConnector(c5_4);
-        structure.addStreetConnector(c5_5);
-        structure.addStreetConnector(c5_6);
-        structure.addStreetConnector(c5_7);
-        structure.addStreetConnector(c5_8);
-        structure.addStreetConnector(c1_1);
-        structure.addStreetConnector(c2_1);
-        structure.addStreetConnector(c3_1);
-        structure.addStreetConnector(c4_1);
+        List<StreetConnector> connectors = Arrays.asList(c5_1, c5_2, c5_4, c5_5, c5_6, c5_7, c5_8, c1_1, c2_1, c3_1, c4_1);
+        structure.addStreetConnectors(connectors);
 
-        structure.addSource(source1);
-        structure.addSource(source2);
-        structure.addSource(source3);
-        structure.addSource(source4);
+        List<RoundaboutSource> sources = Arrays.asList(source1, source2, source3, source4);
+        structure.addSources(sources);
 
-        structure.addSink(sink1);
-        structure.addSink(sink2);
-        structure.addSink(sink3);
-        structure.addSink(sink4);
+        List<RoundaboutSink> sinks = Arrays.asList(sink1, sink2, sink3, sink4);
+        structure.addSinks(sinks);
 
-        structure.addRoute(oneTo_threeRoute);
-        structure.addRoute(oneTo_fourRoute);
-        structure.addRoute(twoTo_four);
-        structure.addRoute(twoTo_one);
-        structure.addRoute(threeTo_one);
-        structure.addRoute(threeTo_two);
-        structure.addRoute(fourTo_two);
-        structure.addRoute(fourTo_three);
+        List<IRoute> routes = Arrays.asList(oneTo_threeRoute, oneTo_fourRoute, twoTo_four, twoTo_one, threeTo_one, threeTo_two, fourTo_two, fourTo_three);
+        structure.addRoutes(routes);
+
         return structure;
     }
 }
