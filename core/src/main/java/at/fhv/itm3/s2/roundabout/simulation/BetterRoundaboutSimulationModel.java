@@ -41,7 +41,9 @@ public class BetterRoundaboutSimulationModel extends RoundaboutSimulationModel {
 
     public void setRoundaboutStructure(IRoundaboutStructure roundaboutStructure) {
         _roundaboutStructure = roundaboutStructure;
-        initRoutes();
+        if(roundaboutStructure.getRoutes().size()==0) {
+            initRoutes();
+        }
     }
 
     public IRoundaboutStructure getRoundaboutStructure() {

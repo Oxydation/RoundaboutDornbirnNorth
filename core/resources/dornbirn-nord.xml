@@ -52,10 +52,10 @@
                     <track order="1" fromSectionId="section_achrain_lauterach" fromSectionType="ROUNDABOUT_SECTION"
                            toSectionId="section_lauterach" toSectionType="ROUNDABOUT_SECTION"/>
                     <track order="2" fromSectionId="section_achrain_lauterach" fromSectionType="ROUNDABOUT_SECTION"
-                           toSectionId="section_lauterach_out" toSectionType="ROUNDABOUT_SECTION"/>
+                           toSectionId="section_lauterach_exit" toSectionType="ROUNDABOUT_SECTION"/>
                 </connector>
                 <connector id="connector_lauterach_sink">
-                    <track fromSectionId="section_lauterach_out" fromSectionType="ROUNDABOUT_SECTION"
+                    <track fromSectionId="section_lauterach_exit" fromSectionType="ROUNDABOUT_SECTION"
                            toSectionId="sink_lauterach" toSectionType="ROUNDABOUT_EXIT"/>
                 </connector>
                 <connector id="connector_lauterach_inlet">
@@ -69,10 +69,10 @@
                     <track order="1" fromSectionId="section_lauterach_a14" fromSectionType="ROUNDABOUT_SECTION"
                            toSectionId="section_a14" toSectionType="ROUNDABOUT_SECTION"/>
                     <track order="2" fromSectionId="section_lauterach_a14" fromSectionType="ROUNDABOUT_SECTION"
-                           toSectionId="section_a14_out" toSectionType="ROUNDABOUT_SECTION"/>
+                           toSectionId="section_a14_exit" toSectionType="ROUNDABOUT_SECTION"/>
                 </connector>
                 <connector id="connector_a14_sink">
-                    <track fromSectionId="section_a14_out" fromSectionType="ROUNDABOUT_SECTION" toSectionId="sink_a14"
+                    <track fromSectionId="section_a14_exit" fromSectionType="ROUNDABOUT_SECTION" toSectionId="sink_a14"
                            toSectionType="ROUNDABOUT_EXIT"/>
                 </connector>
                 <connector id="connector_a14_inlet">
@@ -86,10 +86,10 @@
                     <track order="1" fromSectionId="section_a14_schwefel" fromSectionType="ROUNDABOUT_SECTION"
                            toSectionId="section_schwefel" toSectionType="ROUNDABOUT_SECTION"/>
                     <track order="2" fromSectionId="section_a14_schwefel" fromSectionType="ROUNDABOUT_SECTION"
-                           toSectionId="section_schwefel_out" toSectionType="ROUNDABOUT_EXIT"/>
+                           toSectionId="section_schwefel_exit" toSectionType="ROUNDABOUT_SECTION"/>
                 </connector>
                 <connector id="connector_schwefel_sink">
-                    <track fromSectionId="section_schwefel_out" fromSectionType="ROUNDABOUT_SECTION"
+                    <track fromSectionId="section_schwefel_exit" fromSectionType="ROUNDABOUT_SECTION"
                            toSectionId="sink_schwefel" toSectionType="ROUNDABOUT_EXIT"/>
                 </connector>
                 <connector id="connector_schhwefel_inlet">
@@ -103,10 +103,10 @@
                     <track order="1" fromSectionId="section_schwefel_achrain" fromSectionType="ROUNDABOUT_SECTION"
                            toSectionId="section_achrain" toSectionType="ROUNDABOUT_SECTION"/>
                     <track order="2" fromSectionId="section_schwefel_achrain" fromSectionType="ROUNDABOUT_SECTION"
-                           toSectionId="section_achrain_out" toSectionType="ROUNDABOUT_EXIT"/>
+                           toSectionId="section_achrain_exit" toSectionType="ROUNDABOUT_SECTION"/>
                 </connector>
                 <connector id="connector_achrain_sink">
-                    <track fromSectionId="section_achrain_out" fromSectionType="ROUNDABOUT_SECTION"
+                    <track fromSectionId="section_achrain_exit" fromSectionType="ROUNDABOUT_SECTION"
                            toSectionId="sink_achrain" toSectionType="ROUNDABOUT_EXIT"/>
                 </connector>
                 <connector id="connector_achrain_inlet">
