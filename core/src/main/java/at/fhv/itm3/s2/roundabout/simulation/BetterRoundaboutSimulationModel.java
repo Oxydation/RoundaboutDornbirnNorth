@@ -6,6 +6,7 @@ import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.RouteController;
+import at.fhv.itm3.s2.roundabout.dornbirnnorth.TrafficLightsControllerDornbirnNorth;
 import at.fhv.itm3.s2.roundabout.statistics.StatisticsUpdateEvent;
 import desmoj.core.simulator.Model;
 import desmoj.core.simulator.TimeSpan;

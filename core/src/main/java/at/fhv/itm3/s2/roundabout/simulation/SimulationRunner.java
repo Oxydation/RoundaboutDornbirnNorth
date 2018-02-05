@@ -1,14 +1,10 @@
 package at.fhv.itm3.s2.roundabout.simulation;
 
-import at.fhv.itm14.trafsim.model.entities.Car;
-import at.fhv.itm14.trafsim.model.events.CarDepartureEvent;
-import at.fhv.itm14.trafsim.persistence.model.DTO;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
-import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.dornbirnnorth.DornbirnNorthModelBuilder;
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutStructure;
+import at.fhv.itm3.s2.roundabout.dornbirnnorth.TrafficLightsControllerDornbirnNorth;
 import at.fhv.itm3.s2.roundabout.util.ConfigParser;
 import at.fhv.itm3.s2.roundabout.util.ConfigParserException;
 import at.fhv.itm3.s2.roundabout.util.ILogger;
@@ -27,20 +23,25 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SimulationRunner implements ILogger {
     private static final String DEFAULT_ROUNDABOUT_CONFIG_PATH = SimulationRunner.class.getResource("/dornbirn-nord.xml").getPath();
     private static final long SimulationDuration = 3 * 60 * 60;
-//    private static final long ExecutionSpeed = 50000L;
     private static Map<Street, TimeSeries> timeSeriesMap;
 
     public static void main(String[] args) throws ConfigParserException {
         Double minTimeBetweenCarArrival = 5.0;
         Double maxTimeBetweenCarArrival = 7.0;
         Double standardCarSpeed = 6.0;
-        Double standardCarLength = 2.0;
+        Double standardCarLength = 3.5;
+
 
         BetterRoundaboutSimulationModel model = new BetterRoundaboutSimulationModel(null, "", true, false, minTimeBetweenCarArrival, maxTimeBetweenCarArrival, standardCarSpeed, standardCarLength);
+
+        TrafficLightsControllerDornbirnNorth trafficLightsControllerDornbirnNorth = new TrafficLightsControllerDornbirnNorth(model, 30.0, 60.0,25);
+        model.setTrafficLightsController(trafficLightsControllerDornbirnNorth);
+
         Experiment exp = new Experiment("Roundabout Experiment");
         Experiment.setEpsilon(model.getModelTimeUnit());
         Experiment.setReferenceUnit(model.getModelTimeUnit());
@@ -49,7 +50,7 @@ public class SimulationRunner implements ILogger {
         exp.setShowProgressBar(true);
         exp.setSilent(true);
 
-       model.connectToExperiment(exp);
+        model.connectToExperiment(exp);
 
         IRoundaboutStructure roundaboutStructure = getRoundaboutStructureFromConfigFile(args, model);
 
@@ -57,10 +58,16 @@ public class SimulationRunner implements ILogger {
             roundaboutStructure = new DornbirnNorthModelBuilder().build(model);
         }
 
+        trafficLightsControllerDornbirnNorth.setInlets(
+                roundaboutStructure.getStreets().stream()
+                        .filter(street -> street.getName().contains("_inlet"))
+                        .collect(Collectors.toMap(s -> s.getName(), s -> s))
+        );
+
         model.setRoundaboutStructure(roundaboutStructure);
 
         timeSeriesMap = new HashMap<>();
-        for (Street roundaboutInlet: model.getRoundaboutStructure().getRoundaboutInlets()) {
+        for (Street roundaboutInlet : model.getRoundaboutStructure().getRoundaboutInlets()) {
             timeSeriesMap.put(roundaboutInlet, new TimeSeries(model, "RoundaboutInlet Timeseries", new TimeInstant(0), new TimeInstant(SimulationDuration, model.getModelTimeUnit()), true, true));
         }
         model.setTimeSeriesMap(timeSeriesMap);
@@ -70,7 +77,7 @@ public class SimulationRunner implements ILogger {
         TimeInstant stopTime = new TimeInstant(SimulationDuration, model.getModelTimeUnit());
         exp.tracePeriod(new TimeInstant(0L), stopTime);
         exp.stop(stopTime);
-//        exp.setExecutionSpeedRate(ExecutionSpeed);
+
         System.out.println("Starting simulation.");
         exp.start();
         System.out.println("Simulation finished. Creating reports.");
@@ -93,13 +100,11 @@ public class SimulationRunner implements ILogger {
 
     private static void showStatisticsForSink(Set<AbstractSink> sinks, Set<Street> streets) {
         Statistics enteredCarsStatistics = new Statistics("Entered Cars", "#FF0000");
-        Statistics meanIntersectionPassTimeForEnteredCarsStatistics = new Statistics("MeanIntersectionPassTimeForEnteredCars", "#00FF00");
-        Statistics meanRoundaboutPassTimeForEnteredCars = new Statistics("MeanRoundaboutPassTimeForEnteredCars", "#0000FF");
-        Statistics meanStopCountForEnteredCarsStatistics = new Statistics("MeanStopCountForEnteredCars", "#F0F000");
-        Statistics meanTimeSpentInSystemForEnteredCarsStatistics = new Statistics("MeanTimeSpentInSystemForEnteredCars", "#FF5733");
-        Statistics meanWaitingTimePerStopForEnteredCarsStatistics = new Statistics("MeanWaitingTimePerStopForEnteredCars", "#00F0F0");
+        Statistics meanStopCountForEnteredCarsStatistics = new Statistics("Mean Stop Count", "#F0F000");
+        Statistics meanTimeSpentInSystemForEnteredCarsStatistics = new Statistics("Mean Time Spent In System", "#00FF00");
+        Statistics meanWaitingTimePerStopForEnteredCarsStatistics = new Statistics("Mean Waiting Time Per Stop", "#00F0F0");
 
-        for(AbstractSink sink : sinks) {
+        for (AbstractSink sink : sinks) {
             int xPosition = 0;
             int yPosition = 0;
             if (sink.getName().contains("sink_lauterach")) {
@@ -116,22 +121,18 @@ public class SimulationRunner implements ILogger {
                 yPosition = 420;
             }
 
-            enteredCarsStatistics.addValue(new StatisticsValue(Integer.toString(sink.getEnteredCars().size()),xPosition,yPosition));
-            yPosition+=13;
-            meanIntersectionPassTimeForEnteredCarsStatistics.addValue(new StatisticsValue(String.format("%3.2f" , sink.getMeanIntersectionPassTimeForEnteredCars()),xPosition,yPosition));
-            yPosition+=13;
-            meanRoundaboutPassTimeForEnteredCars.addValue(new StatisticsValue(String.format("%3.2f" , sink.getMeanRoundaboutPassTimeForEnteredCars()),xPosition,yPosition));
-            yPosition+=13;
-            meanStopCountForEnteredCarsStatistics.addValue(new StatisticsValue(String.format("%3.2f" , sink.getMeanStopCountForEnteredCars()),xPosition,yPosition));
-            yPosition+=13;
-            meanTimeSpentInSystemForEnteredCarsStatistics.addValue(new StatisticsValue(String.format("%3.2f" , sink.getMeanTimeSpentInSystemForEnteredCars()),xPosition,yPosition));
-            yPosition+=13;
-            meanWaitingTimePerStopForEnteredCarsStatistics.addValue(new StatisticsValue(String.format("%3.2f" , sink.getMeanWaitingTimePerStopForEnteredCars()),xPosition,yPosition));
+            enteredCarsStatistics.addValue(new StatisticsValue(Integer.toString(sink.getEnteredCars().size()), xPosition, yPosition));
+            yPosition += 13;
+            meanStopCountForEnteredCarsStatistics.addValue(new StatisticsValue(String.format("%3.2f", sink.getMeanStopCountForEnteredCars()), xPosition, yPosition));
+            yPosition += 13;
+            meanTimeSpentInSystemForEnteredCarsStatistics.addValue(new StatisticsValue(String.format("%3.2f", sink.getMeanTimeSpentInSystemForEnteredCars()), xPosition, yPosition));
+            yPosition += 13;
+            meanWaitingTimePerStopForEnteredCarsStatistics.addValue(new StatisticsValue(String.format("%3.2f", sink.getMeanWaitingTimePerStopForEnteredCars()), xPosition, yPosition));
         }
 
         Statistics waitingCarsStatistics = new Statistics("Waiting Cars", "#FF00FF");
 
-        for(Street street : streets){
+        for (Street street : streets) {
             int xPosition = 0;
             int yPosition = 0;
             if (street.getName().contains("section_lauterach_inlet")) {
@@ -148,11 +149,11 @@ public class SimulationRunner implements ILogger {
                 yPosition = 520;
             }
 
-            waitingCarsStatistics.addValue(new StatisticsValue(Integer.toString(street.getCarQueue().size()),xPosition,yPosition));
+            waitingCarsStatistics.addValue(new StatisticsValue(Integer.toString(street.getCarQueue().size()), xPosition, yPosition));
         }
 
-        List<Statistics> statistics = Arrays.asList(enteredCarsStatistics, meanIntersectionPassTimeForEnteredCarsStatistics,
-                meanRoundaboutPassTimeForEnteredCars, meanStopCountForEnteredCarsStatistics, meanTimeSpentInSystemForEnteredCarsStatistics,
+        List<Statistics> statistics = Arrays.asList(enteredCarsStatistics,
+                meanStopCountForEnteredCarsStatistics, meanTimeSpentInSystemForEnteredCarsStatistics,
                 meanWaitingTimePerStopForEnteredCarsStatistics, waitingCarsStatistics);
 
         ResultDrawer window = new ResultDrawer("Kreisverkehr Dornbirn Nord", "/dornbirn-nord.png", statistics);
