@@ -22,8 +22,8 @@ public class BetterRoundaboutSimulationModel extends RoundaboutSimulationModel {
     private IRoundaboutStructure _roundaboutStructure;
     private Map<Street, TimeSeries> timeSeriesMap;
 
-    public BetterRoundaboutSimulationModel(Model model, String name, boolean showInReport, boolean showInTrace, double minTimeBetweenCarArrivals, double maxTimeBetweenCarArrivals) {
-        super(model, name, showInReport, showInTrace, minTimeBetweenCarArrivals, maxTimeBetweenCarArrivals);
+    public BetterRoundaboutSimulationModel(Model model, String name, boolean showInReport, boolean showInTrace, double minTimeBetweenCarArrivals, double maxTimeBetweenCarArrivals, double standardCarSpeed, double standardCarLength) {
+        super(model, name, showInReport, showInTrace, minTimeBetweenCarArrivals, maxTimeBetweenCarArrivals, standardCarSpeed, standardCarLength);
     }
 
     @Override

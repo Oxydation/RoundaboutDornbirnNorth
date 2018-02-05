@@ -27,19 +27,20 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class SimulationRunner implements ILogger {
     private static final String DEFAULT_ROUNDABOUT_CONFIG_PATH = SimulationRunner.class.getResource("/dornbirn-nord.xml").getPath();
-    private static final long SimulationDuration = 3 * 60;// * 60;
+    private static final long SimulationDuration = 3 * 60 * 60;
 //    private static final long ExecutionSpeed = 50000L;
     private static Map<Street, TimeSeries> timeSeriesMap;
 
     public static void main(String[] args) throws ConfigParserException {
-        Double minTimeBetweenCarArrival = 3.8;
-        Double maxTimeBetweenCarArrival = 4.0;
+        Double minTimeBetweenCarArrival = 5.0;
+        Double maxTimeBetweenCarArrival = 7.0;
+        Double standardCarSpeed = 6.0;
+        Double standardCarLength = 2.0;
 
-        BetterRoundaboutSimulationModel model = new BetterRoundaboutSimulationModel(null, "", true, false, minTimeBetweenCarArrival, maxTimeBetweenCarArrival);
+        BetterRoundaboutSimulationModel model = new BetterRoundaboutSimulationModel(null, "", true, false, minTimeBetweenCarArrival, maxTimeBetweenCarArrival, standardCarSpeed, standardCarLength);
         Experiment exp = new Experiment("Roundabout Experiment");
         Experiment.setEpsilon(model.getModelTimeUnit());
         Experiment.setReferenceUnit(model.getModelTimeUnit());
@@ -75,6 +76,8 @@ public class SimulationRunner implements ILogger {
         System.out.println("Simulation finished. Creating reports.");
         exp.finish();
 
+        roundaboutStructure.getStreets();
+
         for (AbstractSink sink : roundaboutStructure.getSinks()) {
             printStatisticsForSink(sink);
         }
@@ -93,7 +96,7 @@ public class SimulationRunner implements ILogger {
         Statistics meanIntersectionPassTimeForEnteredCarsStatistics = new Statistics("MeanIntersectionPassTimeForEnteredCars", "#00FF00");
         Statistics meanRoundaboutPassTimeForEnteredCars = new Statistics("MeanRoundaboutPassTimeForEnteredCars", "#0000FF");
         Statistics meanStopCountForEnteredCarsStatistics = new Statistics("MeanStopCountForEnteredCars", "#F0F000");
-        Statistics meanTimeSpentInSystemForEnteredCarsStatistics = new Statistics("MeanTimeSpentInSystemForEnteredCars", "#0F0F00");
+        Statistics meanTimeSpentInSystemForEnteredCarsStatistics = new Statistics("MeanTimeSpentInSystemForEnteredCars", "#FF5733");
         Statistics meanWaitingTimePerStopForEnteredCarsStatistics = new Statistics("MeanWaitingTimePerStopForEnteredCars", "#00F0F0");
 
         for(AbstractSink sink : sinks) {
@@ -115,18 +118,18 @@ public class SimulationRunner implements ILogger {
 
             enteredCarsStatistics.addValue(new StatisticsValue(Integer.toString(sink.getEnteredCars().size()),xPosition,yPosition));
             yPosition+=13;
-            meanIntersectionPassTimeForEnteredCarsStatistics.addValue(new StatisticsValue(Double.toString(sink.getMeanIntersectionPassTimeForEnteredCars()),xPosition,yPosition));
+            meanIntersectionPassTimeForEnteredCarsStatistics.addValue(new StatisticsValue(String.format("%3.2f" , sink.getMeanIntersectionPassTimeForEnteredCars()),xPosition,yPosition));
             yPosition+=13;
-            meanRoundaboutPassTimeForEnteredCars.addValue(new StatisticsValue(Double.toString(sink.getMeanRoundaboutPassTimeForEnteredCars()),xPosition,yPosition));
+            meanRoundaboutPassTimeForEnteredCars.addValue(new StatisticsValue(String.format("%3.2f" , sink.getMeanRoundaboutPassTimeForEnteredCars()),xPosition,yPosition));
             yPosition+=13;
-            meanStopCountForEnteredCarsStatistics.addValue(new StatisticsValue(Double.toString(sink.getMeanStopCountForEnteredCars()),xPosition,yPosition));
+            meanStopCountForEnteredCarsStatistics.addValue(new StatisticsValue(String.format("%3.2f" , sink.getMeanStopCountForEnteredCars()),xPosition,yPosition));
             yPosition+=13;
-            meanTimeSpentInSystemForEnteredCarsStatistics.addValue(new StatisticsValue(Double.toString(sink.getMeanTimeSpentInSystemForEnteredCars()),xPosition,yPosition));
+            meanTimeSpentInSystemForEnteredCarsStatistics.addValue(new StatisticsValue(String.format("%3.2f" , sink.getMeanTimeSpentInSystemForEnteredCars()),xPosition,yPosition));
             yPosition+=13;
-            meanWaitingTimePerStopForEnteredCarsStatistics.addValue(new StatisticsValue(Double.toString(sink.getMeanWaitingTimePerStopForEnteredCars()),xPosition,yPosition));
+            meanWaitingTimePerStopForEnteredCarsStatistics.addValue(new StatisticsValue(String.format("%3.2f" , sink.getMeanWaitingTimePerStopForEnteredCars()),xPosition,yPosition));
         }
 
-        Statistics waitingCarsStatistics = new Statistics("Waiting Cars", "#FFFFFF");
+        Statistics waitingCarsStatistics = new Statistics("Waiting Cars", "#FF00FF");
 
         for(Street street : streets){
             int xPosition = 0;
