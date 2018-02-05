@@ -39,7 +39,7 @@ public class SimulationRunner implements ILogger {
 
         BetterRoundaboutSimulationModel model = new BetterRoundaboutSimulationModel(null, "", true, false, minTimeBetweenCarArrival, maxTimeBetweenCarArrival, standardCarSpeed, standardCarLength);
 
-        TrafficLightsControllerDornbirnNorth trafficLightsControllerDornbirnNorth = new TrafficLightsControllerDornbirnNorth(model, 30.0, 60.0,25);
+        TrafficLightsControllerDornbirnNorth trafficLightsControllerDornbirnNorth = new TrafficLightsControllerDornbirnNorth(model, 60.0, 120.0,25);
         model.setTrafficLightsController(trafficLightsControllerDornbirnNorth);
 
         Experiment exp = new Experiment("Roundabout Experiment");
@@ -82,6 +82,7 @@ public class SimulationRunner implements ILogger {
         exp.start();
         System.out.println("Simulation finished. Creating reports.");
         exp.finish();
+        exp.stop();
 
         roundaboutStructure.getStreets();
 

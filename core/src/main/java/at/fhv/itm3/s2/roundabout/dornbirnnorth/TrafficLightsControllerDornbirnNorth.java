@@ -20,6 +20,7 @@ public class TrafficLightsControllerDornbirnNorth implements ITrafficLightContro
     private Map<String, Street> inlets;
     private double redPhaseTimeSpan;
     private TimeInstant inletLauterachRedUntil;
+    private TimeInstant inletA14RedUntil;
 
     public TrafficLightsControllerDornbirnNorth(RoundaboutSimulationModel model, double redPhaseTimeSpan, double minTimeToNextRed, int maxQueueSize) {
         this.model = model;
@@ -27,6 +28,7 @@ public class TrafficLightsControllerDornbirnNorth implements ITrafficLightContro
         this.minTimeToNextRed = minTimeToNextRed;
         this.maxQueueSize = maxQueueSize;
         this.inletLauterachRedUntil = new TimeInstant(0);
+        this.inletA14RedUntil = new TimeInstant(0);
     }
 
     public void setInlets(Map<String, Street> inlets) {
@@ -53,13 +55,17 @@ public class TrafficLightsControllerDornbirnNorth implements ITrafficLightContro
         }
 
         if (inlets.get("section_schwefel_inlet#1").getCarQueue().size() > maxQueueSize) {
-            Street streetToToggle = inlets.get("section_a14_inlet#1");
+            if (model.presentTime().compareTo(inletA14RedUntil) >= 0) {
+                Street streetToToggle = inlets.get("section_a14_inlet#1");
 
-            ToggleTrafficLightStateEvent toggleTrafficLightStateEventRed = roundaboutEventFactory.createToggleTrafficLightStateEvent(model);
-            toggleTrafficLightStateEventRed.schedule(streetToToggle, new TimeSpan(0.1, TimeUnit.SECONDS));
+                ToggleTrafficLightStateEvent toggleTrafficLightStateEventRed = roundaboutEventFactory.createToggleTrafficLightStateEvent(model);
+                toggleTrafficLightStateEventRed.schedule(streetToToggle, new TimeSpan(0.1, TimeUnit.SECONDS));
 
-            ToggleTrafficLightStateEvent toggleTrafficLightStateEventGreen = roundaboutEventFactory.createToggleTrafficLightStateEvent(model);
-            toggleTrafficLightStateEventGreen.schedule(streetToToggle, new TimeSpan(this.redPhaseTimeSpan, TimeUnit.SECONDS));
+                ToggleTrafficLightStateEvent toggleTrafficLightStateEventGreen = roundaboutEventFactory.createToggleTrafficLightStateEvent(model);
+                toggleTrafficLightStateEventGreen.schedule(streetToToggle, new TimeSpan(this.redPhaseTimeSpan, TimeUnit.SECONDS));
+
+                inletA14RedUntil = new TimeInstant(toggleTrafficLightStateEventGreen.scheduledNext().getTimeAsDouble() + minTimeToNextRed);
+            }
         }
     }
 }
