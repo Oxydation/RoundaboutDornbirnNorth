@@ -2,17 +2,29 @@ package at.fhv.itm3.s2.roundabout.simulation;
 
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.dornbirnnorth.DornbirnNorthModelBuilder;
 import at.fhv.itm3.s2.roundabout.util.ConfigParser;
 import at.fhv.itm3.s2.roundabout.util.ConfigParserException;
 import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
 import desmoj.core.simulator.Experiment;
 import desmoj.core.simulator.TimeInstant;
+import desmoj.core.statistic.TimeSeries;
+import desmoj.extensions.grafic.util.Plotter;
+
+import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class SimulationRunner {
     private static final String DEFAULT_ROUNDABOUT_CONFIG_FILENAME = "roundabout.xml";
     private static final long SimulationDuration = 1440 * 60;
-    private static final long ExecutionSpeed = 50000L;
+//    private static final long ExecutionSpeed = 50000L;
+    private static Map<Street, TimeSeries> timeSeriesMap;
 
     public static void main(String[] args) {
 
@@ -22,10 +34,10 @@ public class SimulationRunner {
         Experiment.setReferenceUnit(model.getModelTimeUnit());
         exp.setSeedGenerator((long) (Long.MAX_VALUE * Math.random()));
         exp.getDistributionManager().newSeedAll();
-        exp.setShowProgressBar(false);
+        exp.setShowProgressBar(true);
         exp.setSilent(true);
 
-         model.connectToExperiment(exp);
+        model.connectToExperiment(exp);
 
         IRoundaboutStructure roundaboutStructure = getRoundaboutStructureFromConfigFile(args, exp);
 
@@ -35,10 +47,18 @@ public class SimulationRunner {
 
         model.setRoundaboutStructure(roundaboutStructure);
 
+        timeSeriesMap = new HashMap<>();
+        for (Street roundaboutInlet: model.getRoundaboutStructure().getRoundaboutInlets()) {
+            timeSeriesMap.put(roundaboutInlet, new TimeSeries(model, "RoundaboutInlet Timeseries", new TimeInstant(0), new TimeInstant(SimulationDuration, model.getModelTimeUnit()), true, true));
+        }
+        model.setTimeSeriesMap(timeSeriesMap);
+        Plotter plotter = new Plotter("", new Dimension(1200, 800));
+        plotter.setOnScreen(true);
+
         TimeInstant stopTime = new TimeInstant(SimulationDuration, model.getModelTimeUnit());
         exp.tracePeriod(new TimeInstant(0L), stopTime);
         exp.stop(stopTime);
-        exp.setExecutionSpeedRate(ExecutionSpeed);
+//        exp.setExecutionSpeedRate(ExecutionSpeed);
         System.out.println("Starting simulation.");
         exp.start();
         System.out.println("Simulation finished. Creating reports.");
@@ -47,6 +67,21 @@ public class SimulationRunner {
         for (AbstractSink sink : roundaboutStructure.getSinks()) {
             printStatisticsForSink(sink);
         }
+
+        try {
+            saveQueueLengthsToTextFile();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void saveQueueLengthsToTextFile() throws FileNotFoundException {
+        for (Map.Entry<Street, TimeSeries> timeSeriesEntry : timeSeriesMap.entrySet()) {
+            PrintWriter pw = new PrintWriter(new FileOutputStream("queueLengths_" + timeSeriesEntry.getKey().getName() + ".csv"));
+            pw.println(timeSeriesEntry.getValue().getDataValues());
+            pw.close();
+        }
+
     }
 
     private static void printStatisticsForSink(AbstractSink sink) {
