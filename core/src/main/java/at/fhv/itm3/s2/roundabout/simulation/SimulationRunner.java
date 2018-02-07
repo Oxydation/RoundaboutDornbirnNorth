@@ -107,26 +107,26 @@ public class SimulationRunner implements ILogger {
     }
 
     private static void showStatisticsForSink(Set<AbstractSink> sinks, Set<Street> streets) {
-        Statistics enteredCarsStatistics = new Statistics("Entered Cars", "#FF0000");
-        Statistics meanStopCountForEnteredCarsStatistics = new Statistics("Mean Stop Count", "#F0F000");
-        Statistics meanTimeSpentInSystemForEnteredCarsStatistics = new Statistics("Mean Time Spent In System", "#00FF00");
-        Statistics meanWaitingTimePerStopForEnteredCarsStatistics = new Statistics("Mean Waiting Time Per Stop", "#00F0F0");
+        Statistics enteredCarsStatistics = new Statistics("Entered Cars", "#FF5630");
+        Statistics meanStopCountForEnteredCarsStatistics = new Statistics("Mean Stop Count", "#FFAB00");
+        Statistics meanTimeSpentInSystemForEnteredCarsStatistics = new Statistics("Mean Time Spent In System", "#36B37E");
+        Statistics meanWaitingTimePerStopForEnteredCarsStatistics = new Statistics("Mean Waiting Time Per Stop", "#00B8D9");
 
         for (AbstractSink sink : sinks) {
             int xPosition = 0;
             int yPosition = 0;
             if (sink.getName().contains("sink_lauterach")) {
-                xPosition = 390;
-                yPosition = 130;
+                xPosition = 485;
+                yPosition = 180;
             } else if (sink.getName().contains("sink_achrain")) {
                 xPosition = 700;
-                yPosition = 430;
+                yPosition = 380;
             } else if (sink.getName().contains("sink_schwefel")) {
-                xPosition = 460;
-                yPosition = 700;
+                xPosition = 500;
+                yPosition = 650;
             } else if (sink.getName().contains("sink_a14")) {
-                xPosition = 100;
-                yPosition = 420;
+                xPosition = 200;
+                yPosition = 405;
             }
 
             enteredCarsStatistics.addValue(new StatisticsValue(Integer.toString(sink.getEnteredCars().size()), xPosition, yPosition));
@@ -138,23 +138,23 @@ public class SimulationRunner implements ILogger {
             meanWaitingTimePerStopForEnteredCarsStatistics.addValue(new StatisticsValue(String.format("%3.2f", sink.getMeanWaitingTimePerStopForEnteredCars()), xPosition, yPosition));
         }
 
-        Statistics waitingCarsStatistics = new Statistics("Waiting Cars", "#FF00FF");
+        Statistics waitingCarsStatistics = new Statistics("Waiting Cars", "#6554C0");
 
         for (Street street : streets) {
             int xPosition = 0;
             int yPosition = 0;
             if (street.getName().contains("section_lauterach_inlet")) {
-                xPosition = 340;
-                yPosition = 180;
+                xPosition = 375;
+                yPosition = 210;
             } else if (street.getName().contains("section_achrain_inlet")) {
                 xPosition = 700;
-                yPosition = 400;
+                yPosition = 360;
             } else if (street.getName().contains("section_schwefel_inlet")) {
-                xPosition = 530;
-                yPosition = 700;
+                xPosition = 580;
+                yPosition = 665;
             } else if (street.getName().contains("section_a14_inlet")) {
-                xPosition = 100;
-                yPosition = 520;
+                xPosition = 200;
+                yPosition = 500;
             }
 
             waitingCarsStatistics.addValue(new StatisticsValue(Integer.toString(street.getCarQueue().size()), xPosition, yPosition));
