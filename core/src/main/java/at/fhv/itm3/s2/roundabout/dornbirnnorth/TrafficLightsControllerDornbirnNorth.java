@@ -50,7 +50,7 @@ public class TrafficLightsControllerDornbirnNorth implements ITrafficLightContro
                 ToggleTrafficLightStateEvent toggleTrafficLightStateEventGreen = roundaboutEventFactory.createToggleTrafficLightStateEvent(model);
                 toggleTrafficLightStateEventGreen.schedule(streetToToggle, new TimeSpan(this.redPhaseTimeSpan, TimeUnit.SECONDS));
 
-                inletLauterachRedUntil = new TimeInstant(toggleTrafficLightStateEventGreen.scheduledNext().getTimeAsDouble() + minTimeToNextRed);
+                inletLauterachRedUntil = new TimeInstant(toggleTrafficLightStateEventGreen.scheduledNext().getTimeAsDouble() + minTimeToNextRed, TimeUnit.SECONDS);
             }
         }
 

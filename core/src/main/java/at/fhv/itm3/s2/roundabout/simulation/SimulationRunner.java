@@ -16,6 +16,8 @@ import desmoj.core.simulator.Experiment;
 import desmoj.core.simulator.TimeInstant;
 import desmoj.core.statistic.TimeSeries;
 import desmoj.extensions.grafic.util.Plotter;
+import org.knowm.xchart.*;
+import org.knowm.xchart.style.markers.SeriesMarkers;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
@@ -31,16 +33,20 @@ public class SimulationRunner implements ILogger {
     private static Map<Street, TimeSeries> timeSeriesMap;
 
     public static void main(String[] args) throws ConfigParserException {
-        Double minTimeBetweenCarArrival = 5.0;
-        Double maxTimeBetweenCarArrival = 7.0;
-        Double standardCarSpeed = 6.0;
-        Double standardCarLength = 3.5;
+        Double minTimeBetweenCarArrival = 6.0;
+        Double maxTimeBetweenCarArrival = 6.0;
+        Double standardCarSpeed = 5.77;
+        Double standardCarLength = 3.77;
+        Boolean trafficLightsActive = true;
 
 
         BetterRoundaboutSimulationModel model = new BetterRoundaboutSimulationModel(null, "", true, false, minTimeBetweenCarArrival, maxTimeBetweenCarArrival, standardCarSpeed, standardCarLength);
 
-        TrafficLightsControllerDornbirnNorth trafficLightsControllerDornbirnNorth = new TrafficLightsControllerDornbirnNorth(model, 60.0, 120.0,25);
-        model.setTrafficLightsController(trafficLightsControllerDornbirnNorth);
+        TrafficLightsControllerDornbirnNorth trafficLightsControllerDornbirnNorth = null;
+        if (trafficLightsActive) {
+            trafficLightsControllerDornbirnNorth = new TrafficLightsControllerDornbirnNorth(model, 60.0, 180.0, 15);
+            model.setTrafficLightsController(trafficLightsControllerDornbirnNorth);
+        }
 
         Experiment exp = new Experiment("Roundabout Experiment");
         Experiment.setEpsilon(model.getModelTimeUnit());
@@ -58,11 +64,13 @@ public class SimulationRunner implements ILogger {
             roundaboutStructure = new DornbirnNorthModelBuilder().build(model);
         }
 
-        trafficLightsControllerDornbirnNorth.setInlets(
-                roundaboutStructure.getStreets().stream()
-                        .filter(street -> street.getName().contains("_inlet"))
-                        .collect(Collectors.toMap(s -> s.getName(), s -> s))
-        );
+        if (trafficLightsActive) {
+            trafficLightsControllerDornbirnNorth.setInlets(
+                    roundaboutStructure.getStreets().stream()
+                            .filter(street -> street.getName().contains("_inlet"))
+                            .collect(Collectors.toMap(s -> s.getName(), s -> s))
+            );
+        }
 
         model.setRoundaboutStructure(roundaboutStructure);
 
@@ -71,6 +79,7 @@ public class SimulationRunner implements ILogger {
             timeSeriesMap.put(roundaboutInlet, new TimeSeries(model, "RoundaboutInlet Timeseries", new TimeInstant(0), new TimeInstant(SimulationDuration, model.getModelTimeUnit()), true, true));
         }
         model.setTimeSeriesMap(timeSeriesMap);
+
         Plotter plotter = new Plotter("", new Dimension(1200, 800));
         plotter.setOnScreen(true);
 
@@ -104,6 +113,28 @@ public class SimulationRunner implements ILogger {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        printQueueLengthChart();
+    }
+
+    private static void printQueueLengthChart() {
+        XYChart chart = new XYChartBuilder().width(800).height(600).title("Queue Lengths").xAxisTitle("Time (Minutes)").yAxisTitle("Length (Cars)").build();
+
+        // add series
+        for (Map.Entry<Street, TimeSeries> timeSeriesEntry : timeSeriesMap.entrySet()) {
+            String seriesName = timeSeriesEntry.getKey().getName();
+
+            double[] xData = new double[timeSeriesEntry.getValue().getDataValues().size()];
+            for(int i = 0; i < timeSeriesEntry.getValue().getDataValues().size(); i++){
+                xData[i] = timeSeriesEntry.getValue().getDataValues().get(i);
+            }
+
+            XYSeries series = chart.addSeries(seriesName, xData);
+            series.setMarker(SeriesMarkers.NONE);
+        }
+
+        // show it
+        new SwingWrapper(chart).displayChart();
     }
 
     private static void showStatisticsForSink(Set<AbstractSink> sinks, Set<Street> streets) {

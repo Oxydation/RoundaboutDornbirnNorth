@@ -7,8 +7,8 @@
     <components>
         <component id="roundabout_dornbirn_nord" type="ROUNDABOUT" name="Kreisverkehr Dornbirn Nord">
             <parameters>
-                <parameter name="MIN_DISTANCE_FACTOR_BETWEEN_CARS" value="2.0"/>
-                <parameter name="MAX_DISTANCE_FACTOR_BETWEEN_CARS" value="4.0"/>
+                <parameter name="MIN_DISTANCE_FACTOR_BETWEEN_CARS" value="1.5"/>
+                <parameter name="MAX_DISTANCE_FACTOR_BETWEEN_CARS" value="2.5"/>
                 <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="2.0"/>
                 <parameter name="MAX_TIME_BETWEEN_CAR_ARRIVALS" value="10.0"/>
             </parameters>
