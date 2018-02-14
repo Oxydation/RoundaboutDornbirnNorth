@@ -35,6 +35,13 @@
             <artifactId>jfreechart</artifactId>
             <version>1.0.14</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.knowm.xchart/xchart -->
+        <dependency>
+            <groupId>org.knowm.xchart</groupId>
+            <artifactId>xchart</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+
     </dependencies>
 
 
